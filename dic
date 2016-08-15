@@ -1,0 +1,14 @@
+#!/bin/bash -x
+
+if [ $# -ne 2 ]
+then
+    echo "Usage: dic <value> <file>"
+    exit 1
+fi
+
+OPVALUE=$1
+FILE=$2
+ORIGVAL=$(cat $FILE)
+NEWVAL=$(($ORIGVAL + $OPVALUE))
+
+echo "$NEWVAL" > $FILE
