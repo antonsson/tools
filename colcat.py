@@ -1,6 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/python
 import sys
 import signal
+import os
 
 # Reset
 ColorOff='\033[0m'       # Text Reset
@@ -57,6 +58,7 @@ ColorArray=[
 
 original_sigint = signal.getsignal(signal.SIGINT)
 
+
 def exit_gracefully(signum, frame):
     # restore the original signal handler as otherwise evil things will happen
     # in raw_input when CTRL+C is pressed, and our signal handler is not re-entrant
@@ -87,4 +89,5 @@ while True:
         sys.stdout.write(currentColor+lineSplit[0]+ColorOff+": "+lineColor+lineSplit[1]+ColorOff)
     else:
         sys.stdout.write(ColorOff+line)
+    #sys.stdout.flush()
 

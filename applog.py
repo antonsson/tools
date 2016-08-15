@@ -13,7 +13,11 @@ Yellow='\033[33m'   # Yellow
 
 def get_pid(packageName):
     pid = ""
-    pidLine = subprocess.check_output(["adb", "shell", "ps", "|", "grep", packageName]).split()
+    try:
+        pidLine = subprocess.check_output(["adb", "shell", "ps", "|", "grep", packageName]).split()
+    except:
+        return pid
+
     if len(pidLine) > 1:
         pid = pidLine[1]
     return pid
@@ -38,19 +42,19 @@ signal.signal(signal.SIGINT, exit_gracefully)
 popen = subprocess.Popen(["adb", "logcat", "-v", "threadtime"], stdout=subprocess.PIPE)
 
 for line in iter(popen.stdout.readline, ""):
-    if time.time() - last_pid_check > 5 or startProcString in line and package in line:
+    if pid == "" or time.time() - last_pid_check > 5 or startProcString in line and package in line:
         pid = get_pid(package)
         last_pid_check = time.time()
 
     lineSplit = line.split()
     if len(lineSplit) > 5 and lineSplit[2] == pid:
-        level = lineSplit[4]
-        if level == "F":
-            sys.stdout.write(BoldRed)
-        if level == "E":
-            sys.stdout.write(Red)
-        elif level == "W":
-            sys.stdout.write(Yellow)
+        #level = lineSplit[4]
+        #if level == "F":
+            #sys.stdout.write(BoldRed)
+        #if level == "E":
+            #sys.stdout.write(Red)
+        #elif level == "W":
+            #sys.stdout.write(Yellow)
 
-        sys.stdout.write(line+ColorOff)
+        sys.stdout.write(line)
 
